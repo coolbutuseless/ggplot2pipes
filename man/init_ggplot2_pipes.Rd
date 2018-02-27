@@ -2,18 +2,20 @@
 % Please edit documentation in R/ggplot2pipes.R
 \name{init_ggplot2_pipes}
 \alias{init_ggplot2_pipes}
-\title{augment a packages which uses composition via '+' into package which understand pipes}
+\title{Create pipe-enabled ggplot2 functions}
 \usage{
-init_ggplot2_pipes(prefix = "add_")
+init_ggplot2_pipes(prefix = "add_",
+  func_regex = "^(geom_|stat_|coord_|annot|xlim|ylim|theme_|facet_|labs)")
 }
 \arguments{
-\item{prefix}{string with which to prefix names of \code{ggplot2} functions in order to name the pipe-enabled functions}
+\item{prefix}{string with which to prefix names of \code{ggplot2} functions in order to name the pipe-enabled functions. default: "add_".
+Note: You could set this the empty string, in which case the new functions would mask the name of the library function}
+
+\item{func_regex}{Regular expression to filter the list of ggplot functions to make pipe-enabled.  The default regex will capture all
+stats and geoms and some other misc stuff.}
 }
 \description{
-augment a packages which uses composition via '+' into package which understand pipes
-}
-\details{
-This is proof-of-concept only, which was inspired after seeing @hadleywickham
-and @cpsievert discussing DSLs for plotting:
+Initially inspired many years ago when @hadleywickham
+and @cpsievert were discussing DSLs for plotting:
 https://twitter.com/cpsievert/status/606190120568365056
 }
