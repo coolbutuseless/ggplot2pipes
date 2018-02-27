@@ -45,7 +45,7 @@ create_pipe_enabled_ggplot2_func <- function(ggplot2_func_name, prefix='add_') {
       ggplot2_func <- get(ggplot2_func_name, envir = as.environment('package:ggplot2'))
       `+`(lhs, ggplot2_func(...))
     },
-    envir = globalenv()
+    pos = 1
   )
 }
 
