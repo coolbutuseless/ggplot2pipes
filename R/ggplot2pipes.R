@@ -37,7 +37,7 @@ init_ggplot2_pipes <- function(prefix="add_", func_regex = '^(geom_|stat_|coord_
 #' @export
 #-----------------------------------------------------------------------------
 create_pipe_enabled_ggplot2_func <- function(ggplot2_func_name, prefix='add_') {
-  pipe_enabled_func_name <- paste0("add_", ggplot2_func_name)
+  pipe_enabled_func_name <- paste0(prefix, ggplot2_func_name)
 
   assign(
     pipe_enabled_func_name,
