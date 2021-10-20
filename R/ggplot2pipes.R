@@ -11,7 +11,6 @@
 #'               Note: You could set this the empty string, in which case the new functions would mask the name of the library function
 #' @param func_regex Regular expression to filter the list of ggplot functions to make pipe-enabled.  The default regex will capture all
 #'                   stats and geoms and some other misc stuff.
-#'
 #' @importFrom purrr keep walk
 #' @importFrom dplyr '%>%'
 #' @export
@@ -41,9 +40,17 @@ create_pipe_enabled_ggplot2_func <- function(ggplot2_func_name, prefix='add_') {
 
   assign(
     pipe_enabled_func_name,
-    function(lhs, ...) {
+    function(lhs = "not supplied", ...) {
       ggplot2_func <- get(ggplot2_func_name, envir = as.environment('package:ggplot2'))
-      `+`(lhs, ggplot2_func(...))
+      if (any(lhs != "not supplied")) {
+        if (is.ggplot(lhs)) {
+          `+`(lhs, ggplot2_func(...))
+        } else {
+          ggplot2_func(lhs, ...)
+        }
+      } else {
+        ggplot2_func(...)
+      }
     },
     pos = 1
   )
@@ -58,11 +65,11 @@ if (FALSE) {
   library(dplyr)
   library(ggplot2)
 
-  init_ggplot2_pipes()
+  init_ggplot2_pipes(prefix="")
 
-  ggplot(mtcars) %>%
-    add_geom_line(aes(mpg, wt)) %>%
-    add_labs(title="hello") %>%
-    add_theme_bw() %>%
-    add_facet_wrap(~am)
+  ggplot(mtcars) |>
+    geom_line(aes(mpg, wt)) |>
+    labs(title="hello") |>
+    theme_bw() +
+    facet_wrap(~am)
 }
