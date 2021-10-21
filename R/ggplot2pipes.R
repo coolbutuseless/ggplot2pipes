@@ -15,7 +15,7 @@
 #' @importFrom dplyr '%>%'
 #' @export
 #-----------------------------------------------------------------------------
-init_ggplot2_pipes <- function(prefix="add_", func_regex = '^(geom_|stat_|coord_|annot|xlim|ylim|theme_|facet_|labs|guides)') {
+init_ggplot2_pipes <- function(prefix="add_", func_regex = '^(geom_|stat_|coord_|annot|xlim|ylim|theme|facet_|labs|guides)') {
   ls('package:ggplot2') %>%
     purrr::keep(~is.function(get(.x))) %>%
     purrr::keep(~grepl(func_regex, .x)) %>%
