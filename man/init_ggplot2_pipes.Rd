@@ -4,8 +4,10 @@
 \alias{init_ggplot2_pipes}
 \title{Create pipe-enabled ggplot2 functions}
 \usage{
-init_ggplot2_pipes(prefix = "add_",
-  func_regex = "^(geom_|stat_|coord_|annot|xlim|ylim|theme_|facet_|labs)")
+init_ggplot2_pipes(
+  prefix = "add_",
+  func_regex = "^(geom_|stat_|coord_|annot|xlim|ylim|theme_|facet_|labs|guides)"
+)
 }
 \arguments{
 \item{prefix}{string with which to prefix names of \code{ggplot2} functions in order to name the pipe-enabled functions. default: "add_".

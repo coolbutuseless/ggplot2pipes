@@ -8,9 +8,10 @@ Description: Create pipe-enabled versions of ggplot2 functions and
     add them to the global namespace.
 License: MIT + file LICENSE
 LazyData: TRUE
-RoxygenNote: 6.0.1
+RoxygenNote: 7.1.2.9000
 Imports:
   dplyr,
-  purrr
+  purrr,
+  ggthemes
 Suggests:
   ggplot2

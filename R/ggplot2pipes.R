@@ -15,7 +15,7 @@
 #' @importFrom dplyr '%>%'
 #' @export
 #-----------------------------------------------------------------------------
-init_ggplot2_pipes <- function(prefix="add_", func_regex = '^(geom_|stat_|coord_|annot|xlim|ylim|theme_|facet_|labs)') {
+init_ggplot2_pipes <- function(prefix="add_", func_regex = '^(geom_|stat_|coord_|annot|xlim|ylim|theme_|facet_|labs|guides)') {
   ls('package:ggplot2') %>%
     purrr::keep(~is.function(get(.x))) %>%
     purrr::keep(~grepl(func_regex, .x)) %>%
@@ -64,12 +64,14 @@ create_pipe_enabled_ggplot2_func <- function(ggplot2_func_name, prefix='add_') {
 if (FALSE) {
   library(dplyr)
   library(ggplot2)
+  library(ggplot2pipes)
 
   init_ggplot2_pipes(prefix="")
 
-  ggplot(mtcars) |>
-    geom_line(aes(mpg, wt)) |>
+  ggplot(mtcars, aes(mpg, wt)) |>
+    geom_line() |>
     labs(title="hello") |>
-    theme_bw() +
-    facet_wrap(~am)
+    theme_bw() |>
+    facet_wrap(~am, scale = "free") |>
+    base_mode()
 }
