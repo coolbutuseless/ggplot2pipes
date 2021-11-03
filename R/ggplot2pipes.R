@@ -15,11 +15,17 @@
 #' @importFrom dplyr '%>%'
 #' @export
 #-----------------------------------------------------------------------------
-init_ggplot2_pipes <- function(prefix="add_", func_regex = '^(geom_|stat_|coord_|annot|xlim|ylim|theme|facet_|labs|guides)') {
-  ls('package:ggplot2') %>%
-    purrr::keep(~is.function(get(.x))) %>%
-    purrr::keep(~grepl(func_regex, .x)) %>%
-    purrr::walk(create_pipe_enabled_ggplot2_func, prefix=prefix)
+init_ggplot2_pipes <- function(prefix="", func_regex = '^(geom_|stat_|coord_|annot|xlim|ylim|theme|facet_|labs|guides|scale)', packages = c("ggplot2", "ggpubr", "ggforce", "ggbeeswarp", "ggrepel")) {
+  for (pack_name in packages) {
+    tryCatch(
+      {
+        ls(paste0('package:', pack_name)) %>%
+          purrr::keep(~is.function(get(.x))) %>%
+          purrr::keep(~grepl(func_regex, .x)) %>%
+          purrr::walk(create_pipe_enabled_ggplot2_func, prefix=prefix)
+      },
+      error = function(e) e)
+  }
 }
 
 
