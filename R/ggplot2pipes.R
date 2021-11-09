@@ -15,7 +15,7 @@
 #' @importFrom dplyr '%>%'
 #' @export
 #-----------------------------------------------------------------------------
-init_ggplot2_pipes <- function(prefix="", func_regex = '^(geom_|stat_|coord_|annot|xlim|ylim|theme|facet_|labs|guides|scale_x|scale_y)', packages = c("ggplot2", "ggpubr", "ggforce", "ggbeeswarp", "ggrepel")) {
+init_ggplot2_pipes <- function(prefix="", func_regex = '^(geom_|stat_|coord_|annot|xlim|ylim|theme|facet_|labs|guides|scale_x|scale_y)', packages = c("ggplot2")) {
   for (pack_name in packages) {
     tryCatch(
       {
