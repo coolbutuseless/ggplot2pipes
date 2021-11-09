@@ -15,14 +15,14 @@
 #' @importFrom dplyr '%>%'
 #' @export
 #-----------------------------------------------------------------------------
-init_ggplot2_pipes <- function(prefix="", func_regex = '^(geom_|stat_|coord_|annot|xlim|ylim|theme|facet_|labs|guides|scale)', packages = c("ggplot2", "ggpubr", "ggforce", "ggbeeswarp", "ggrepel")) {
+init_ggplot2_pipes <- function(prefix="", func_regex = '^(geom_|stat_|coord_|annot|xlim|ylim|theme|facet_|labs|guides|scale_x|scale_y)', packages = c("ggplot2", "ggpubr", "ggforce", "ggbeeswarp", "ggrepel")) {
   for (pack_name in packages) {
     tryCatch(
       {
         ls(paste0('package:', pack_name)) %>%
           purrr::keep(~is.function(get(.x))) %>%
           purrr::keep(~grepl(func_regex, .x)) %>%
-          purrr::walk(create_pipe_enabled_ggplot2_func, prefix=prefix)
+          purrr::walk(create_pipe_enabled_ggplot2_func, prefix=prefix, pack_name=pack_name)
       },
       error = function(e) e)
   }
@@ -41,13 +41,13 @@ init_ggplot2_pipes <- function(prefix="", func_regex = '^(geom_|stat_|coord_|ann
 #'
 #' @export
 #-----------------------------------------------------------------------------
-create_pipe_enabled_ggplot2_func <- function(ggplot2_func_name, prefix='add_') {
+create_pipe_enabled_ggplot2_func <- function(ggplot2_func_name, prefix='add_', pack_name='ggplot2') {
   pipe_enabled_func_name <- paste0(prefix, ggplot2_func_name)
 
   assign(
     pipe_enabled_func_name,
     function(lhs = "not supplied", ...) {
-      ggplot2_func <- get(ggplot2_func_name, envir = as.environment('package:ggplot2'))
+      ggplot2_func <- get(ggplot2_func_name, envir = as.environment(paste0('package:', pack_name)))
       if (any(lhs != "not supplied")) {
         if (is.ggplot(lhs)) {
           `+`(lhs, ggplot2_func(...))
@@ -75,8 +75,8 @@ if (FALSE) {
   init_ggplot2_pipes(prefix="")
 
   ggplot(mtcars, aes(mpg, wt)) |>
-    geom_line() |>
-    labs(title="hello") |>
+    geom_point(aes(color = mpg)) |>
+    labs(title="hello")
     theme_bw() |>
     facet_wrap(~am, scale = "free") |>
     base_mode()
